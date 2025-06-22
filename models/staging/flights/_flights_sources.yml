@@ -12,6 +12,17 @@ sources:
       - name: airports_data
       - name: boarding_passes
       - name: bookings
+        description: bookings
+        columns:
+          - name: book_ref
+          - name: book_date
+          - name: total_amount
+        config:
+          freshness: # make this a little more strict
+            warn_after: {count: 600000, period: hour}
+            error_after: {count: 100000, period: day}
+            filter: current_timestamp::date - book_date::date < 30000
+        loaded_at_field: book_date::timestamp
       - name: flights
       - name: flights_v
       - name: routes
